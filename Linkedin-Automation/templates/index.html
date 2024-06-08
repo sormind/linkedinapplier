@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Automation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTcZTpboJL4drQ7P8+K4Z4eF1r59PY+0Qm3DT/IfrnZt2ij1GPhcNsdy+jZ4b3iO3fU96w3bOO9oA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container">
+        <h1>LinkedIn Automation</h1>
+        
+        <div class="section">
+            <h2>Upload CSV File</h2>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="csvFile" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload-alt"></i> Choose File
+                </label>
+                <input type="file" id="csvFile" name="file" accept=".csv" required>
+                <button type="submit" class="button">Upload</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Add Entry Manually</h2>
+            <form action="/add" method="post" class="form-inline">
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="text" name="phone" placeholder="Phone" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="resume_path" placeholder="Resume Path" required>
+                <input type="url" name="job_url" placeholder="Job Application URL" required>
+                <button type="submit" class="button">Add Entry</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Upload Resume</h2>
+            <form action="/upload_resume" method="post" enctype="multipart/form-data">
+                <label for="resumeFile" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload-alt"></i> Choose File
+                </label>
+                <input type="file" id="resumeFile" name="resume" accept=".pdf" required>
+                <button type="submit" class="button">Upload</button>
+            </form>
+        </div>
+        
+        <div class="section">
+            <h2>Current Entries</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Resume Path</th>
+                        <th>Job Application URL</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, entry in entries %}
+                    <tr>
+                        <td>{{ entry['First Name'] }}</td>
+                        <td>{{ entry['Last Name'] }}</td>
+                        <td>{{ entry['Phone'] }}</td>
+                        <td>{{ entry['Email'] }}</td>
+                        <td>{{ entry['Resume Path'] }}</td>
+                        <td><a href="{{ entry['Job Application URL'] }}" target="_blank">{{ entry['Job Application URL'] }}</a></td>
+                        <td>
+                            <form action="/delete/{{ index }}" method="post" style="display:inline;">
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Run Automation</h2>
+            <a href="/run_automation" class="button">Start Automation</a>
+        </div>
+        
+        <div class="section">
+            <h2>Download CSV File</h2>
+            <a href="/download" class="button">Download CSV</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
